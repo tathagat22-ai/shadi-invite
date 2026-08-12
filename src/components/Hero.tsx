@@ -3,44 +3,51 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Chandelier, MarigoldStrand, LotusDivider } from "./Decorations";
+import { FloralSpray } from "./FloralArt";
+import { MonogramCrest, PavilionScene } from "./CardArt";
+import { weddingDetails as w } from "@/data/events";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
-  const monogramRef = useRef<HTMLDivElement>(null);
-  const nameRef = useRef<HTMLDivElement>(null);
-  const dateRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.2 });
+      const q = gsap.utils.selector(cardRef);
 
-      tl.fromTo(
-        bgRef.current,
-        { scale: 1.15, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 1.8, ease: "power2.out" }
-      )
-        .fromTo(
-          monogramRef.current,
-          { opacity: 0, scale: 0.7, y: 20 },
-          { opacity: 1, scale: 1, y: 0, duration: 1.1, ease: "back.out(1.4)" },
-          "-=1.2"
+      gsap.set(cardRef.current, { opacity: 0, y: 40, scale: 0.96 });
+
+      const tl = gsap.timeline({ delay: 0.15 });
+
+      tl.to(cardRef.current, {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.1,
+        ease: "power3.out",
+      })
+        .from(
+          q(".hero-border"),
+          { opacity: 0, duration: 1, ease: "power2.inOut" },
+          "-=0.6"
         )
-        .fromTo(
-          nameRef.current,
-          { opacity: 0, y: 30 },
-          { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
+        .from(
+          q(".hero-floral"),
+          { opacity: 0, scale: 0.8, duration: 1, stagger: 0.15, ease: "power2.out" },
+          "-=0.9"
+        )
+        .from(
+          q(".hero-crest"),
+          { opacity: 0, scale: 0.7, y: 10, duration: 0.8, ease: "back.out(1.5)" },
+          "-=0.7"
+        )
+        .from(
+          q(".hero-reveal"),
+          { opacity: 0, y: 18, duration: 0.7, stagger: 0.14, ease: "power2.out" },
           "-=0.5"
-        )
-        .fromTo(
-          dateRef.current,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" },
-          "-=0.4"
         )
         .fromTo(
           scrollRef.current,
@@ -56,18 +63,6 @@ export default function Hero() {
         yoyo: true,
         ease: "sine.inOut",
       });
-
-      // Parallax on the background image
-      gsap.to(bgRef.current, {
-        yPercent: 15,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -76,110 +71,177 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden py-10 px-4"
     >
-      {/* Full-bleed background image (dancing couple — no baked-in text, softened for legibility) */}
+      {/* soft dark backdrop */}
       <div
-        ref={bgRef}
-        className="absolute -inset-12 z-0"
+        className="absolute inset-0 z-0"
         style={{
           backgroundImage: "url(/images/couple-dance.jpg)",
           backgroundSize: "cover",
-          backgroundPosition: "center 35%",
-          filter: "blur(3px) brightness(0.55) saturate(1.15)",
-        }}
-      />
-      {/* Dark jewel overlay for depth + legibility */}
-      <div
-        className="absolute inset-0 z-[1]"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(42,8,16,0.75) 0%, rgba(42,8,16,0.45) 35%, rgba(42,8,16,0.6) 65%, rgba(42,8,16,0.92) 100%)",
+          backgroundPosition: "center 30%",
+          filter: "blur(14px) brightness(0.32) saturate(1.1)",
+          transform: "scale(1.1)",
         }}
       />
       <div
         className="absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at center, transparent 30%, rgba(42,8,16,0.7) 100%)",
+            "radial-gradient(ellipse at center, rgba(42,8,16,0.5) 0%, rgba(20,11,46,0.85) 100%)",
         }}
       />
 
-      {/* Chandelier from top */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 z-10">
-        <Chandelier />
-      </div>
-
-      {/* Marigold garlands hanging on sides */}
-      <MarigoldStrand
-        count={14}
-        className="absolute top-0 left-[6%] sm:left-[15%] z-10"
-      />
-      <MarigoldStrand
-        count={14}
-        className="absolute top-0 right-[6%] sm:right-[15%] z-10"
-      />
-
-      {/* Content */}
-      <div className="relative z-20 flex flex-col items-center px-6 text-center mt-16">
-        <div ref={monogramRef} className="mb-4 opacity-0">
-          <p
-            className="font-heading text-xs sm:text-sm tracking-[0.4em] uppercase mb-4 text-glow-gold"
-            style={{ color: "var(--gold-light)" }}
+      {/* Invitation card */}
+      <div
+        ref={cardRef}
+        className="relative z-10 w-full max-w-[440px] mx-auto"
+      >
+        <div
+          className="relative px-7 sm:px-10 pt-10 pb-8 overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(165deg, rgba(74,20,32,0.72), rgba(20,11,46,0.82))",
+            backdropFilter: "blur(6px)",
+            boxShadow:
+              "0 20px 70px rgba(0,0,0,0.55), inset 0 1px 0 rgba(245,216,150,0.12)",
+          }}
+        >
+          {/* ornate border */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            preserveAspectRatio="none"
+            viewBox="0 0 300 500"
+            fill="none"
           >
-            The Wedding Of
-          </p>
-          <div className="relative flex items-center justify-center">
-            <div
-              className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(245,216,150,0.25), transparent 65%)",
-              }}
+            <rect
+              className="hero-border"
+              x="8"
+              y="8"
+              width="284"
+              height="484"
+              stroke="var(--gold)"
+              strokeWidth="1.5"
+              opacity="0.9"
             />
-            <span className="relative font-script text-8xl sm:text-9xl gold-shimmer text-glow-gold leading-none">
-              A
-            </span>
+            <rect
+              className="hero-border"
+              x="15"
+              y="15"
+              width="270"
+              height="470"
+              stroke="var(--gold-light)"
+              strokeWidth="0.6"
+              opacity="0.5"
+            />
+          </svg>
+
+          {/* corner florals */}
+          <FloralSpray className="hero-floral absolute -top-2 -left-3 w-28 h-40 sm:w-32 sm:h-44" />
+          <FloralSpray flip className="hero-floral absolute -top-2 -right-3 w-28 h-40 sm:w-32 sm:h-44" />
+
+          <div className="relative flex flex-col items-center text-center">
+            <MonogramCrest className="hero-crest w-24 h-28 sm:w-28 sm:h-32 mb-2" />
+
+            <p
+              className="hero-reveal font-heading text-[10px] sm:text-xs tracking-[0.35em] uppercase mb-3"
+              style={{ color: "var(--gold-bright)" }}
+            >
+              Together with their families
+            </p>
+
+            <h1 className="hero-reveal font-script text-5xl sm:text-6xl gold-shimmer text-glow-gold leading-tight">
+              Akanksha
+            </h1>
             <span
-              className="relative font-decorative text-3xl sm:text-4xl mx-1 sm:mx-3"
+              className="hero-reveal font-decorative text-xl sm:text-2xl my-1"
               style={{ color: "var(--gold-light)" }}
             >
               &amp;
             </span>
-            <span className="relative font-script text-8xl sm:text-9xl gold-shimmer text-glow-gold leading-none">
-              T
-            </span>
-          </div>
-        </div>
+            <h1 className="hero-reveal font-script text-5xl sm:text-6xl gold-shimmer text-glow-gold leading-tight">
+              Tathagat
+            </h1>
 
-        <div ref={nameRef} className="mb-8 opacity-0">
-          <h1 className="font-decorative text-3xl sm:text-5xl md:text-6xl font-bold tracking-wide gold-text text-glow-gold">
-            Akanksha
-          </h1>
-          <div className="my-3">
-            <LotusDivider />
-          </div>
-          <h1 className="font-decorative text-3xl sm:text-5xl md:text-6xl font-bold tracking-wide gold-text text-glow-gold">
-            Tathagat
-          </h1>
-        </div>
-
-        <div ref={dateRef} className="opacity-0">
-          <div
-            className="inline-block px-8 py-4 rounded-sm glass-panel"
-          >
             <p
-              className="font-heading text-xs sm:text-sm tracking-[0.3em] uppercase"
-              style={{ color: "var(--gold-light)" }}
+              className="hero-reveal font-body text-sm sm:text-base mt-5 mb-5 max-w-[280px] leading-relaxed"
+              style={{ color: "var(--cream-muted)" }}
             >
-              Save the Date
+              request the pleasure of your company to celebrate the auspicious
+              occasion of their wedding
+            </p>
+
+            {/* Structured date block */}
+            {w.dateKnown ? (
+              <div className="hero-reveal flex items-stretch justify-center gap-4 my-2">
+                <div className="flex flex-col justify-center">
+                  <span
+                    className="font-heading text-xs tracking-[0.2em] uppercase"
+                    style={{ color: "var(--gold-bright)" }}
+                  >
+                    {w.weddingMonth}
+                  </span>
+                </div>
+                <div
+                  className="flex flex-col items-center px-4"
+                  style={{
+                    borderLeft: "1px solid var(--gold-soft, #D4C4A0)",
+                    borderRight: "1px solid var(--gold-soft, #D4C4A0)",
+                    borderColor: "rgba(212,175,55,0.5)",
+                  }}
+                >
+                  <span
+                    className="font-display text-5xl font-bold gold-text leading-none"
+                  >
+                    {w.weddingDay}
+                  </span>
+                </div>
+                <div className="flex flex-col justify-center">
+                  <span
+                    className="font-heading text-xs tracking-[0.2em] uppercase"
+                    style={{ color: "var(--gold-bright)" }}
+                  >
+                    {w.weddingYear}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="hero-reveal my-2">
+                <p
+                  className="font-decorative text-2xl sm:text-3xl gold-text"
+                  style={{ letterSpacing: "0.05em" }}
+                >
+                  Date Coming Soon
+                </p>
+              </div>
+            )}
+
+            {w.dateKnown && (
+              <p
+                className="hero-reveal font-heading text-xs tracking-[0.3em] uppercase mt-1"
+                style={{ color: "var(--cream)" }}
+              >
+                {w.weddingWeekday}
+              </p>
+            )}
+
+            <div className="hero-reveal w-16 h-px my-5 gold-hairline" />
+
+            <p
+              className="hero-reveal font-heading text-[10px] tracking-[0.3em] uppercase mb-1"
+              style={{ color: "var(--gold-bright)" }}
+            >
+              To be held at
             </p>
             <p
-              className="font-display text-xl sm:text-2xl mt-1 font-semibold"
+              className="hero-reveal font-display text-base sm:text-lg font-semibold"
               style={{ color: "var(--cream)" }}
             >
-              Date Coming Soon
+              {w.ceremonyVenue}
             </p>
+
+            {/* pavilion scene */}
+            <PavilionScene className="hero-reveal w-full max-w-[300px] h-20 mt-4 opacity-80" />
           </div>
         </div>
       </div>
@@ -187,7 +249,7 @@ export default function Hero() {
       {/* Scroll cue */}
       <div
         ref={scrollRef}
-        className="absolute bottom-8 flex flex-col items-center gap-2 opacity-0 z-20"
+        className="absolute bottom-5 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 opacity-0 z-20"
       >
         <span
           className="text-[10px] tracking-[0.3em] uppercase font-heading"
@@ -195,14 +257,7 @@ export default function Hero() {
         >
           Scroll
         </span>
-        <svg
-          width="20"
-          height="30"
-          viewBox="0 0 20 30"
-          fill="none"
-          stroke="var(--gold-light)"
-          strokeWidth="1.5"
-        >
+        <svg width="18" height="28" viewBox="0 0 20 30" fill="none" stroke="var(--gold-light)" strokeWidth="1.5">
           <rect x="1" y="1" width="18" height="28" rx="9" />
           <line x1="10" y1="7" x2="10" y2="13" />
         </svg>

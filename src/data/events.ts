@@ -74,7 +74,20 @@ export const events: WeddingEvent[] = [
 export const weddingDetails = {
   bride: "Akanksha",
   groom: "Tathagat",
-  weddingDate: "Date Coming Soon",
+
+  // Structured wedding date (drives the hero invitation card).
+  // Set dateKnown to true once the real date is confirmed.
+  dateKnown: false,
+  weddingMonth: "Month", // e.g. "December"
+  weddingDay: "00", // e.g. "14"
+  weddingYear: "2026",
+  weddingWeekday: "Weekday", // e.g. "Sunday"
+  weddingTime: "Time to be announced", // e.g. "At Seven O'Clock in the Evening"
+
+  // Primary ceremony venue shown on the hero card
+  ceremonyVenue: "Venue to be announced",
+  ceremonyCity: "",
+
   brideParents: {
     father: "Father's Name",
     mother: "Mother's Name",
