@@ -3,6 +3,7 @@ import {
   Playfair_Display,
   Great_Vibes,
   Cinzel,
+  Cinzel_Decorative,
   Cormorant_Garamond,
 } from "next/font/google";
 import "./globals.css";
@@ -28,6 +29,13 @@ const cinzel = Cinzel({
   display: "swap",
 });
 
+const cinzelDecorative = Cinzel_Decorative({
+  variable: "--font-cinzel-decorative",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
+
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   subsets: ["latin"],
@@ -50,7 +58,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${greatVibes.variable} ${cinzel.variable} ${cormorant.variable}`}
+      className={`${playfair.variable} ${greatVibes.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${cormorant.variable}`}
     >
       <body>{children}</body>
     </html>

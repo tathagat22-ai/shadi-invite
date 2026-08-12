@@ -8,6 +8,7 @@ export interface WeddingEvent {
   address: string;
   mapLink: string;
   icon: string;
+  image?: string;
 }
 
 export const events: WeddingEvent[] = [
@@ -43,6 +44,7 @@ export const events: WeddingEvent[] = [
     address: "Address TBD",
     mapLink: "#",
     icon: "sangeet",
+    image: "/images/couple-sangeet.jpg",
   },
   {
     id: "wedding",
@@ -54,6 +56,7 @@ export const events: WeddingEvent[] = [
     address: "Address TBD",
     mapLink: "#",
     icon: "wedding",
+    image: "/images/couple-dance.jpg",
   },
   {
     id: "reception",

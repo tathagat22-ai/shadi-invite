@@ -84,18 +84,19 @@ export default function FloatingPetals() {
             >
               <path
                 d="M10 0 C15 7 20 14 10 28 C0 14 5 7 10 0Z"
-                fill="var(--gold-light)"
-                opacity="0.6"
+                fill={p.id % 2 === 0 ? "var(--marigold)" : "var(--gold-light)"}
+                opacity="0.7"
               />
             </svg>
           ) : (
             <div
               className="rounded-full"
               style={{
-                width: p.size * 0.4,
-                height: p.size * 0.4,
+                width: p.size * 0.5,
+                height: p.size * 0.5,
                 background:
-                  "radial-gradient(circle, var(--gold-light), transparent)",
+                  "radial-gradient(circle, var(--gold-light), rgba(245,216,150,0))",
+                boxShadow: "0 0 6px rgba(245,216,150,0.6)",
               }}
             />
           )}

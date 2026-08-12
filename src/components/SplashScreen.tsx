@@ -150,7 +150,10 @@ export default function SplashScreen({
     <div
       ref={containerRef}
       className="fixed inset-0 z-[100] flex flex-col items-center justify-center"
-      style={{ background: "var(--ivory)" }}
+      style={{
+        background:
+          "radial-gradient(ellipse at center, var(--wine) 0%, var(--wine-deep) 70%)",
+      }}
     >
       <svg
         ref={mandalaRef}
@@ -196,8 +199,8 @@ export default function SplashScreen({
 
       <div ref={textRef} className="mt-8 text-center opacity-0">
         <p
-          className="font-heading text-sm tracking-[0.35em] uppercase"
-          style={{ color: "var(--gold)" }}
+          className="font-decorative text-sm tracking-[0.35em] uppercase text-glow-gold"
+          style={{ color: "var(--gold-light)" }}
         >
           You are invited
         </p>
@@ -206,7 +209,7 @@ export default function SplashScreen({
       <button
         onClick={handleSkip}
         className="absolute bottom-8 text-xs tracking-[0.2em] uppercase transition-opacity hover:opacity-100 cursor-pointer"
-        style={{ color: "var(--brown-muted)", opacity: 0.5 }}
+        style={{ color: "var(--cream-muted)", opacity: 0.6 }}
       >
         Skip
       </button>

@@ -40,8 +40,9 @@ export default function AudioPlayer() {
             : "opacity-0 translate-y-4 pointer-events-none"
         }`}
         style={{
-          background: "linear-gradient(135deg, var(--burgundy), var(--gold))",
+          background: "linear-gradient(135deg, var(--maroon), var(--gold))",
           border: "2px solid var(--gold-light)",
+          boxShadow: "0 0 18px rgba(212,175,55,0.45)",
         }}
         aria-label={isPlaying ? "Pause music" : "Play music"}
       >
