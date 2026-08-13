@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import {
   Great_Vibes,
+  Pinyon_Script,
   Playfair_Display,
   Cinzel,
   Cinzel_Decorative,
@@ -12,6 +13,12 @@ const greatVibes = Great_Vibes({
   weight: "400",
   subsets: ["latin"],
   variable: "--font-great-vibes",
+});
+
+const pinyonScript = Pinyon_Script({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-pinyon-script",
 });
 
 const playfair = Playfair_Display({
@@ -39,15 +46,15 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Akanksha & Tathagat — Wedding Invitation",
-  description: "You are cordially invited to celebrate the wedding of Akanksha & Tathagat",
+  title: "Akansha & Tathagat — Wedding Invitation",
+  description: "You are cordially invited to celebrate the wedding of Akansha & Tathagat",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${greatVibes.variable} ${playfair.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${cormorant.variable}`}
+      className={`${greatVibes.variable} ${pinyonScript.variable} ${playfair.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${cormorant.variable}`}
     >
       <body>{children}</body>
     </html>

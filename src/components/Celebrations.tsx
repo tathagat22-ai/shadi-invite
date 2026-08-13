@@ -4,28 +4,52 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { events } from "@/data/events";
-import VenueIllustration from "./VenueIllustration";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function CelebrationCard({ event }: { event: (typeof events)[0] }) {
+const GOLD = "#E6D6AE";
+const GOLD_MUTED = "#C9B891";
+
+// Per-event tuning for the composited couple figurine (standing vs sitting differ).
+const COUPLE: Record<string, { height: string; maxW: string; bottom: string }> = {
+  carnival: { height: "62%", maxW: "80%", bottom: "17%" },
+  sangeet: { height: "66%", maxW: "88%", bottom: "15%" },
+  wedding: { height: "52%", maxW: "92%", bottom: "17%" },
+  reception: { height: "60%", maxW: "88%", bottom: "16%" },
+};
+
+function CelebrationCard({ event }: { event: (typeof events)[number] }) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const c = COUPLE[event.id] ?? { height: "60%", maxW: "88%", bottom: "16%" };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
       const q = gsap.utils.selector(cardRef);
-      gsap.from(q(".cv"), {
-        opacity: 0,
-        y: 24,
-        duration: 0.7,
-        stagger: 0.08,
-        ease: "power2.out",
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: cardRef.current,
-          start: "top 80%",
-          once: true,
+          start: "top 78%",
+          // Replay the reveal every time the card enters view (down or up),
+          // and reset it when it leaves so it always animates fresh.
+          toggleActions: "restart none restart reset",
         },
       });
+      tl.from(q(".card-bg"), { scale: 1.12, duration: 1.6, ease: "power2.out" }, 0)
+        .from(
+          q(".card-couple"),
+          { yPercent: 14, opacity: 0, duration: 1.1, ease: "power3.out" },
+          0.1
+        )
+        .from(
+          q(".card-top"),
+          { y: 18, opacity: 0, duration: 0.7, stagger: 0.14, ease: "power2.out" },
+          0.4
+        )
+        .from(
+          q(".card-bottom"),
+          { y: 16, opacity: 0, duration: 0.7, stagger: 0.14, ease: "power2.out" },
+          0.75
+        );
     }, cardRef);
     return () => ctx.revert();
   }, []);
@@ -33,74 +57,179 @@ function CelebrationCard({ event }: { event: (typeof events)[0] }) {
   return (
     <div
       ref={cardRef}
-      className="flex flex-col items-center text-center px-6 py-12 sm:py-16"
-      style={{ borderBottom: "1px solid rgba(192,184,176,0.2)" }}
+      className="relative w-full overflow-hidden"
+      style={{
+        aspectRatio: "2 / 3",
+        maxHeight: "100vh",
+        borderTop: "1px solid rgba(230,214,174,0.14)",
+      }}
     >
-      {event.image && (
-        <div
-          className="cv w-full max-w-[320px] aspect-[4/3] rounded-sm overflow-hidden mb-8"
-          style={{ boxShadow: "0 6px 24px rgba(0,0,0,0.1)" }}
+      {/* Background scene */}
+      <img
+        src={event.bg}
+        alt=""
+        className="card-bg absolute inset-0 w-full h-full object-cover object-center"
+      />
+
+      {/* Top scrim — for the name */}
+      <div
+        className="absolute inset-x-0 top-0 pointer-events-none"
+        style={{
+          height: "42%",
+          background:
+            "linear-gradient(180deg, rgba(9,13,33,0.78) 0%, rgba(9,13,33,0.28) 55%, transparent 100%)",
+        }}
+      />
+
+      {/* Couple figurine */}
+      <img
+        src={event.couple}
+        alt=""
+        className="card-couple absolute left-1/2 -translate-x-1/2 object-contain"
+        style={{
+          bottom: c.bottom,
+          height: c.height,
+          maxWidth: c.maxW,
+          filter: "drop-shadow(0 12px 26px rgba(0,0,0,0.45))",
+        }}
+      />
+
+      {/* Bottom scrim — sits over the couple's lower half for detail legibility */}
+      <div
+        className="absolute inset-x-0 bottom-0 pointer-events-none"
+        style={{
+          height: "40%",
+          background:
+            "linear-gradient(0deg, rgba(9,13,33,0.9) 0%, rgba(9,13,33,0.5) 45%, transparent 100%)",
+        }}
+      />
+
+      {/* Name block (top) */}
+      <div
+        className="absolute inset-x-0 top-0 px-6 text-center"
+        style={{ paddingTop: "8.5%", color: GOLD }}
+      >
+        <p
+          className="card-top"
+          style={{
+            fontFamily: "var(--font-cinzel)",
+            fontSize: "clamp(8px, 2.6vw, 11px)",
+            letterSpacing: "0.32em",
+            color: GOLD_MUTED,
+            textShadow: "0 1px 6px rgba(0,0,0,0.7)",
+          }}
         >
-          <div
-            className="w-full h-full"
+          {event.tagline}
+        </p>
+        <h3
+          className="card-top"
+          style={{
+            fontFamily: "var(--font-pinyon-script)",
+            fontSize: "clamp(46px, 15vw, 78px)",
+            lineHeight: 1.05,
+            marginTop: "0.1em",
+            textShadow: "0 3px 16px rgba(0,0,0,0.75)",
+          }}
+        >
+          {event.name}
+        </h3>
+        {event.subtitle && (
+          <p
+            className="card-top"
             style={{
-              backgroundImage: `url(${event.image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              fontFamily: "var(--font-cinzel)",
+              fontSize: "clamp(8px, 2.5vw, 11px)",
+              letterSpacing: "0.28em",
+              marginTop: "0.2em",
+              color: GOLD_MUTED,
+              textShadow: "0 1px 6px rgba(0,0,0,0.7)",
+            }}
+          >
+            {event.subtitle.toUpperCase()}
+          </p>
+        )}
+      </div>
+
+      {/* Details block (bottom) */}
+      <div
+        className="absolute inset-x-0 bottom-0 px-6 text-center"
+        style={{ paddingBottom: "7%", color: GOLD }}
+      >
+        <div
+          className="card-bottom"
+          style={{
+            fontFamily: "var(--font-pinyon-script)",
+            fontSize: "clamp(26px, 8vw, 40px)",
+            lineHeight: 1.1,
+            textShadow: "0 2px 12px rgba(0,0,0,0.8)",
+          }}
+        >
+          {event.venue}
+        </div>
+        <div
+          className="card-bottom"
+          style={{
+            fontFamily: "var(--font-cinzel)",
+            fontSize: "clamp(8px, 2.4vw, 11px)",
+            letterSpacing: "0.24em",
+            marginTop: "0.5em",
+            color: GOLD_MUTED,
+            textShadow: "0 1px 6px rgba(0,0,0,0.8)",
+          }}
+        >
+          {event.address.toUpperCase()}
+        </div>
+
+        <div
+          className="card-bottom flex items-center justify-center gap-3"
+          style={{ marginTop: "0.9em" }}
+        >
+          <span
+            style={{
+              width: "clamp(18px, 6vw, 34px)",
+              height: "1px",
+              background: GOLD_MUTED,
+              display: "inline-block",
+            }}
+          />
+          <span style={{ color: GOLD, fontSize: "clamp(9px, 2.4vw, 12px)" }}>♡</span>
+          <span
+            style={{
+              width: "clamp(18px, 6vw, 34px)",
+              height: "1px",
+              background: GOLD_MUTED,
+              display: "inline-block",
             }}
           />
         </div>
-      )}
 
-      <p
-        className="cv text-heading text-[9px] tracking-[0.35em] uppercase mb-2"
-        style={{ color: "var(--mauve)" }}
-      >
-        {event.tagline}
-      </p>
-      <h3 className="cv text-script text-4xl sm:text-5xl silver-shimmer mb-1">
-        {event.name}
-      </h3>
-      {event.subtitle && (
-        <p
-          className="cv text-heading text-[9px] tracking-[0.25em] uppercase mb-4"
-          style={{ color: "var(--charcoal-light)" }}
-        >
-          {event.subtitle}
-        </p>
-      )}
-
-      {!event.image && (
-        <VenueIllustration type={event.id} className="cv w-full max-w-[280px] h-auto my-4" />
-      )}
-
-      <p
-        className="cv text-script text-2xl sm:text-3xl mt-4 mb-1"
-        style={{ color: "var(--brown-soft)" }}
-      >
-        {event.venue}
-      </p>
-      <p
-        className="cv text-body text-sm mb-4"
-        style={{ color: "var(--charcoal-light)" }}
-      >
-        {event.address}
-      </p>
-
-      <div className="cv flex items-center gap-3 mb-1">
-        <span
-          className="text-heading text-[9px] tracking-[0.2em] uppercase"
-          style={{ color: "var(--mauve)" }}
+        <div
+          className="card-bottom"
+          style={{
+            fontFamily: "var(--font-cinzel)",
+            fontSize: "clamp(10px, 3vw, 14px)",
+            letterSpacing: "0.16em",
+            marginTop: "0.7em",
+            textShadow: "0 1px 6px rgba(0,0,0,0.8)",
+          }}
         >
           {event.date}
-        </span>
+        </div>
+        <div
+          className="card-bottom"
+          style={{
+            fontFamily: "var(--font-cinzel)",
+            fontSize: "clamp(8px, 2.5vw, 11px)",
+            letterSpacing: "0.18em",
+            marginTop: "0.35em",
+            fontStyle: "italic",
+            color: GOLD_MUTED,
+            textShadow: "0 1px 6px rgba(0,0,0,0.8)",
+          }}
+        >
+          {event.time}
+        </div>
       </div>
-      <p
-        className="cv text-body text-sm italic"
-        style={{ color: "var(--charcoal-light)" }}
-      >
-        {event.time}
-      </p>
     </div>
   );
 }
@@ -115,11 +244,11 @@ export default function Celebrations() {
         opacity: 0,
         y: 20,
         duration: 0.7,
-        stagger: 0.1,
+        stagger: 0.12,
         ease: "power2.out",
         scrollTrigger: {
           trigger: headerRef.current,
-          start: "top 80%",
+          start: "top 82%",
           once: true,
         },
       });
@@ -128,58 +257,66 @@ export default function Celebrations() {
   }, []);
 
   return (
-    <section className="relative" style={{ background: "var(--blush-light)" }}>
-      {/* Architectural frame border - top */}
-      <div className="absolute top-0 left-0 right-0 pointer-events-none">
-        <svg viewBox="0 0 400 40" className="w-full" fill="none" preserveAspectRatio="xMidYMin meet">
-          <defs>
-            <linearGradient id="frame-s" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor="transparent" />
-              <stop offset="20%" stopColor="#C0B8B0" stopOpacity="0.3" />
-              <stop offset="80%" stopColor="#C0B8B0" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="transparent" />
-            </linearGradient>
-          </defs>
-          <line x1="20" y1="5" x2="380" y2="5" stroke="url(#frame-s)" strokeWidth="0.5" />
-          <line x1="30" y1="10" x2="370" y2="10" stroke="url(#frame-s)" strokeWidth="0.3" />
-          {/* Column tops */}
-          <rect x="25" y="8" width="6" height="30" stroke="#C0B8B0" strokeWidth="0.5" opacity="0.25" fill="none" />
-          <rect x="369" y="8" width="6" height="30" stroke="#C0B8B0" strokeWidth="0.5" opacity="0.25" fill="none" />
-          {/* Arch */}
-          <path d="M31,10 Q200,-5 369,10" stroke="#C0B8B0" strokeWidth="0.5" opacity="0.2" fill="none" />
-        </svg>
-      </div>
-
-      {/* Side pillar lines */}
-      <div
-        className="absolute top-0 bottom-0 left-4 sm:left-8 w-px pointer-events-none"
-        style={{ background: "linear-gradient(180deg, transparent, rgba(192,184,176,0.2), transparent)" }}
-      />
-      <div
-        className="absolute top-0 bottom-0 right-4 sm:right-8 w-px pointer-events-none"
-        style={{ background: "linear-gradient(180deg, transparent, rgba(192,184,176,0.2), transparent)" }}
-      />
-
+    <section
+      className="relative"
+      style={{
+        background:
+          "linear-gradient(180deg, #0a0e26 0%, #0c1130 40%, #0a0e26 100%)",
+      }}
+    >
       {/* Section header */}
       <div
         ref={headerRef}
-        className="flex flex-col items-center text-center px-6 pt-16 sm:pt-24 pb-8"
+        className="flex flex-col items-center text-center px-6 pt-20 pb-12"
+        style={{ color: GOLD }}
       >
-        <div className="ch w-16 hairline mb-8" />
-        <h2 className="ch text-script text-4xl sm:text-5xl silver-shimmer mb-3">
+        <div
+          className="ch"
+          style={{
+            width: "56px",
+            height: "1px",
+            background: GOLD_MUTED,
+            opacity: 0.6,
+            marginBottom: "1.6rem",
+          }}
+        />
+        <h2
+          className="ch"
+          style={{
+            fontFamily: "var(--font-pinyon-script)",
+            fontSize: "clamp(40px, 12vw, 62px)",
+            lineHeight: 1.05,
+            textShadow: "0 2px 14px rgba(0,0,0,0.5)",
+          }}
+        >
           The Celebrations
         </h2>
         <p
-          className="ch text-heading text-[9px] tracking-[0.3em] uppercase"
-          style={{ color: "var(--charcoal-light)" }}
+          className="ch"
+          style={{
+            fontFamily: "var(--font-cinzel)",
+            fontSize: "clamp(8px, 2.6vw, 11px)",
+            letterSpacing: "0.3em",
+            marginTop: "0.8rem",
+            color: GOLD_MUTED,
+          }}
         >
-          Join us for the festivities
+          JOIN US FOR THE FESTIVITIES
         </p>
-        <div className="ch w-16 hairline mt-8" />
+        <div
+          className="ch"
+          style={{
+            width: "56px",
+            height: "1px",
+            background: GOLD_MUTED,
+            opacity: 0.6,
+            marginTop: "1.6rem",
+          }}
+        />
       </div>
 
       {/* Event cards */}
-      <div className="max-w-[520px] mx-auto">
+      <div>
         {events.map((event) => (
           <CelebrationCard key={event.id} event={event} />
         ))}
