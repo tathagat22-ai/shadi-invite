@@ -2,173 +2,323 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { weddingDetails as w } from "@/data/events";
 
-gsap.registerPlugin(ScrollTrigger);
+const GOLD = "#D4C4A0";
+const GOLD_MUTED = "#BCA88E";
 
 export default function Hero({ opened = true }: { opened?: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
 
   useEffect(() => {
-    if (!opened) return;
+    if (!opened || hasAnimated.current) return;
+    hasAnimated.current = true;
+
     const ctx = gsap.context(() => {
-      const q = gsap.utils.selector(contentRef);
-      gsap.from(q(".iv"), {
+      gsap.from(sectionRef.current, {
         opacity: 0,
-        y: 20,
-        duration: 0.8,
-        stagger: 0.1,
+        duration: 0.6,
         ease: "power2.out",
-        delay: 0.2,
+      });
+
+      const groups = gsap.utils.toArray<HTMLElement>(".reveal-group");
+      groups.forEach((el, i) => {
+        gsap.from(el, {
+          opacity: 0,
+          y: 18,
+          duration: 0.7,
+          delay: 0.4 + i * 0.35,
+          ease: "power2.out",
+        });
       });
     }, sectionRef);
+
     return () => ctx.revert();
   }, [opened]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden"
-      style={{ background: "var(--wine-deep)" }}
+      className="relative w-full"
+      style={{ aspectRatio: "9 / 16", maxHeight: "100vh" }}
     >
-      {/* Background artwork — couple image, soft and atmospheric */}
-      <div className="absolute inset-0">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: "url(/images/couple-welcome.jpg)",
-            backgroundSize: "cover",
-            backgroundPosition: "center 40%",
-            opacity: 0.08,
-            filter: "blur(6px)",
-          }}
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "radial-gradient(ellipse at 50% 40%, rgba(74,20,32,0.3) 0%, rgba(42,8,16,0.9) 70%)",
-          }}
-        />
-      </div>
+      <img
+        src="/images/hero-bg.png"
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover object-center"
+        style={{ display: "block" }}
+      />
 
-      {/* Content */}
       <div
-        ref={contentRef}
-        className="relative z-10 flex flex-col items-center text-center px-6 py-20 sm:py-28 min-h-screen justify-center"
-        style={{ maxWidth: 520, margin: "0 auto" }}
+        className="absolute inset-0 flex flex-col items-center pointer-events-none"
+        style={{ color: GOLD }}
       >
-        {/* Ornate top line */}
-        <div className="iv w-20 h-px mb-8 gold-hairline" />
+        {/* AT Monogram */}
+        <div
+          className="reveal-group absolute left-0 right-0 text-center"
+          style={{ top: "13%" }}
+        >
+          <div
+            style={{
+              fontFamily: "var(--font-cinzel-decorative)",
+              fontSize: "clamp(38px, 10.5vw, 58px)",
+              lineHeight: 1,
+              textShadow: "0 2px 10px rgba(0,0,0,0.6)",
+            }}
+          >
+            <span
+              style={{
+                position: "relative",
+                left: "0.05em",
+                fontSize: "0.8em",
+              }}
+            >
+              A
+            </span>
+            <span style={{ position: "relative", left: "-0.05em" }}>T</span>
+          </div>
+        </div>
 
-        {/* Monogram */}
-        <div className="iv mb-4">
-          <svg viewBox="0 0 100 100" width="72" height="72" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="mgold" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0" stopColor="#F5D896" />
-                <stop offset="0.5" stopColor="#D4AF37" />
-                <stop offset="1" stopColor="#A87B2C" />
-              </linearGradient>
-            </defs>
-            <circle cx="50" cy="50" r="46" stroke="url(#mgold)" strokeWidth="1.2" />
-            <circle cx="50" cy="50" r="42" stroke="url(#mgold)" strokeWidth="0.6" opacity="0.5" />
-            <text x="36" y="62" fontFamily="var(--font-script)" fontSize="40" fill="url(#mgold)" textAnchor="middle">A</text>
-            <text x="66" y="66" fontFamily="var(--font-script)" fontSize="40" fill="url(#mgold)" textAnchor="middle">T</text>
+        {/* Heart ornament */}
+        <div
+          className="reveal-group absolute left-0 right-0 text-center"
+          style={{ top: "19.5%" }}
+        >
+          <svg
+            width="120"
+            height="24"
+            viewBox="0 0 120 24"
+            fill="none"
+            style={{ display: "inline-block" }}
+          >
+            <path
+              d="M10 12 C20 12, 30 4, 45 8 Q52 10, 55 14 Q58 18, 60 12"
+              stroke={GOLD_MUTED}
+              strokeWidth="0.8"
+              fill="none"
+            />
+            <path
+              d="M110 12 C100 12, 90 4, 75 8 Q68 10, 65 14 Q62 18, 60 12"
+              stroke={GOLD_MUTED}
+              strokeWidth="0.8"
+              fill="none"
+            />
+            <text
+              x="60"
+              y="14"
+              textAnchor="middle"
+              fill={GOLD}
+              fontSize="10"
+              fontFamily="serif"
+            >
+              ♡
+            </text>
           </svg>
         </div>
 
-        <p
-          className="iv font-heading text-[10px] sm:text-xs tracking-[0.35em] uppercase mb-8"
-          style={{ color: "var(--gold-bright)" }}
-        >
-          Together with their families
-        </p>
-
         {/* Names */}
-        <h1 className="iv font-script text-5xl sm:text-7xl gold-shimmer leading-tight">
-          {w.bride}
-        </h1>
-        <span
-          className="iv font-decorative text-xl sm:text-2xl my-2"
-          style={{ color: "var(--gold-light)" }}
+        <div
+          className="reveal-group absolute left-0 right-0 text-center"
+          style={{ top: "23%", padding: "0 4%" }}
         >
-          &amp;
-        </span>
-        <h1 className="iv font-script text-5xl sm:text-7xl gold-shimmer leading-tight mb-6">
-          {w.groom}
-        </h1>
+          <div
+            style={{
+              fontFamily: "var(--font-great-vibes)",
+              fontSize: "clamp(34px, 10.5vw, 54px)",
+              lineHeight: 1.15,
+              textShadow: "0 2px 12px rgba(0,0,0,0.6)",
+            }}
+          >
+            Akansha & Tathagat
+          </div>
+        </div>
 
-        <p
-          className="iv font-heading text-[10px] sm:text-xs tracking-[0.3em] uppercase mb-2"
-          style={{ color: "var(--gold-bright)" }}
+        {/* Request text */}
+        <div
+          className="reveal-group absolute left-0 right-0 text-center"
+          style={{ top: "34%", padding: "0 8%" }}
         >
-          Request the pleasure of your company
-        </p>
-        <p
-          className="iv font-heading text-[10px] sm:text-xs tracking-[0.3em] uppercase mb-8"
-          style={{ color: "var(--gold-bright)" }}
-        >
-          To celebrate our wedding on
-        </p>
+          <div
+            style={{
+              fontFamily: "var(--font-cinzel)",
+              fontSize: "clamp(7.5px, 2.4vw, 11px)",
+              letterSpacing: "0.18em",
+              lineHeight: 1.9,
+              textShadow: "0 1px 6px rgba(0,0,0,0.5)",
+              color: GOLD_MUTED,
+            }}
+          >
+            WE REQUEST THE PLEASURE OF YOUR COMPANY
+            <br />
+            TO CELEBRATE OUR WEDDING ON
+          </div>
+        </div>
 
         {/* Date block */}
-        {w.dateKnown ? (
-          <div className="iv flex items-center justify-center gap-4 mb-2">
-            <div className="flex flex-col items-center">
-              <span className="font-heading text-xs tracking-[0.2em] uppercase" style={{ color: "var(--gold-bright)" }}>
-                {w.weddingMonth}
-              </span>
-            </div>
-            <div
-              className="flex flex-col items-center px-5 py-1"
-              style={{ borderLeft: "1px solid rgba(212,175,55,0.5)", borderRight: "1px solid rgba(212,175,55,0.5)" }}
+        <div
+          className="reveal-group absolute left-0 right-0 text-center"
+          style={{ top: "41%" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "0",
+            }}
+          >
+            {/* Left line */}
+            <span
+              style={{
+                width: "clamp(28px, 7.5vw, 48px)",
+                height: "1px",
+                background: GOLD_MUTED,
+                display: "inline-block",
+              }}
+            />
+            {/* NOV */}
+            <span
+              style={{
+                fontFamily: "var(--font-cinzel)",
+                fontSize: "clamp(10px, 3vw, 14px)",
+                letterSpacing: "0.15em",
+                textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+                padding: "0 clamp(6px, 2vw, 12px)",
+              }}
             >
-              <span className="font-display text-5xl sm:text-6xl font-bold gold-text leading-none">
-                {w.weddingDay}
-              </span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="font-heading text-xs tracking-[0.2em] uppercase" style={{ color: "var(--gold-bright)" }}>
-                {w.weddingYear}
-              </span>
-            </div>
+              NOV
+            </span>
+            {/* 22 ND */}
+            <span
+              style={{
+                fontFamily: "var(--font-playfair)",
+                fontSize: "clamp(42px, 13vw, 68px)",
+                fontWeight: 400,
+                lineHeight: 1,
+                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
+                position: "relative",
+              }}
+            >
+              22
+              <sup
+                style={{
+                  fontSize: "0.28em",
+                  position: "absolute",
+                  top: "0.2em",
+                  letterSpacing: "0.05em",
+                  fontFamily: "var(--font-cinzel)",
+                }}
+              >
+                ND
+              </sup>
+            </span>
+            {/* 2026 */}
+            <span
+              style={{
+                fontFamily: "var(--font-cinzel)",
+                fontSize: "clamp(10px, 3vw, 14px)",
+                letterSpacing: "0.15em",
+                textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+                padding: "0 clamp(6px, 2vw, 12px)",
+              }}
+            >
+              2026
+            </span>
+            {/* Right line */}
+            <span
+              style={{
+                width: "clamp(28px, 7.5vw, 48px)",
+                height: "1px",
+                background: GOLD_MUTED,
+                display: "inline-block",
+              }}
+            />
           </div>
-        ) : (
-          <p className="iv font-decorative text-2xl sm:text-3xl gold-text mb-2">
-            Save the Date
-          </p>
-        )}
+          <div
+            style={{
+              fontFamily: "var(--font-cinzel)",
+              fontSize: "clamp(9px, 2.8vw, 13px)",
+              letterSpacing: "0.3em",
+              marginTop: "clamp(2px, 0.5vw, 4px)",
+              textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+            }}
+          >
+            SUNDAY
+          </div>
+        </div>
 
-        {w.dateKnown && (
-          <p className="iv font-heading text-[10px] tracking-[0.3em] uppercase mb-6" style={{ color: "var(--cream)" }}>
-            {w.weddingWeekday}
-          </p>
-        )}
-
-        <div className="iv w-12 h-px my-6 gold-hairline" />
-
-        <p
-          className="iv font-heading text-[10px] tracking-[0.3em] uppercase mb-2"
-          style={{ color: "var(--gold-bright)" }}
+        {/* Venue */}
+        <div
+          className="reveal-group absolute left-0 right-0 text-center"
+          style={{ top: "53%" }}
         >
-          To be held at
-        </p>
-        <p
-          className="iv font-script text-2xl sm:text-3xl"
-          style={{ color: "var(--cream)" }}
+          <div
+            style={{
+              fontFamily: "var(--font-cinzel)",
+              fontSize: "clamp(7.5px, 2.4vw, 11px)",
+              letterSpacing: "0.2em",
+              textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+              color: GOLD_MUTED,
+            }}
+          >
+            TO BE HELD AT
+          </div>
+          <div
+            style={{
+              fontFamily: "var(--font-great-vibes)",
+              fontSize: "clamp(24px, 7.5vw, 42px)",
+              marginTop: "clamp(4px, 1.2vw, 10px)",
+              textShadow: "0 2px 10px rgba(0,0,0,0.6)",
+            }}
+          >
+            Amanora The Fern Pune
+          </div>
+        </div>
+
+        {/* Heart divider + Time */}
+        <div
+          className="reveal-group absolute left-0 right-0 text-center"
+          style={{ top: "62%" }}
         >
-          {w.ceremonyVenue}
-        </p>
-
-        {w.ceremonyCity && (
-          <p className="iv font-body text-sm mt-1" style={{ color: "var(--cream-muted)" }}>
-            {w.ceremonyCity}
-          </p>
-        )}
-
-        <div className="iv w-20 h-px mt-10 gold-hairline" />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              marginBottom: "clamp(6px, 1.5vw, 12px)",
+            }}
+          >
+            <span
+              style={{
+                width: "clamp(30px, 8vw, 50px)",
+                height: "1px",
+                background: GOLD_MUTED,
+                display: "inline-block",
+              }}
+            />
+            <span style={{ fontSize: "clamp(10px, 2.5vw, 14px)" }}>♡</span>
+            <span
+              style={{
+                width: "clamp(30px, 8vw, 50px)",
+                height: "1px",
+                background: GOLD_MUTED,
+                display: "inline-block",
+              }}
+            />
+          </div>
+          <div
+            style={{
+              fontFamily: "var(--font-cinzel)",
+              fontSize: "clamp(8px, 2.8vw, 13px)",
+              letterSpacing: "0.15em",
+              fontStyle: "italic",
+              textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+            }}
+          >
+            AT 7:30 PM IN THE EVENING
+          </div>
+        </div>
       </div>
     </section>
   );

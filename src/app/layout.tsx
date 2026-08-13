@@ -1,64 +1,53 @@
 import type { Metadata } from "next";
 import {
-  Playfair_Display,
   Great_Vibes,
+  Playfair_Display,
   Cinzel,
   Cinzel_Decorative,
   Cormorant_Garamond,
 } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const greatVibes = Great_Vibes({
+  weight: "400",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  display: "swap",
+  variable: "--font-great-vibes",
 });
 
-const greatVibes = Great_Vibes({
-  variable: "--font-great-vibes",
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: "400",
-  display: "swap",
+  weight: ["400", "600", "700"],
+  variable: "--font-playfair",
 });
 
 const cinzel = Cinzel({
-  variable: "--font-cinzel",
   subsets: ["latin"],
-  weight: ["400", "600"],
-  display: "swap",
+  weight: ["400", "600", "700"],
+  variable: "--font-cinzel",
 });
 
 const cinzelDecorative = Cinzel_Decorative({
-  variable: "--font-cinzel-decorative",
   subsets: ["latin"],
   weight: ["400", "700"],
-  display: "swap",
+  variable: "--font-cinzel-decorative",
 });
 
 const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  display: "swap",
+  variable: "--font-cormorant",
 });
 
 export const metadata: Metadata = {
   title: "Akanksha & Tathagat — Wedding Invitation",
-  description:
-    "You are cordially invited to celebrate the wedding of Akanksha & Tathagat.",
-  openGraph: {
-    title: "Akanksha & Tathagat — Wedding Invitation",
-    description: "Join us as we celebrate the union of Akanksha & Tathagat.",
-    type: "website",
-  },
+  description: "You are cordially invited to celebrate the wedding of Akanksha & Tathagat",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${greatVibes.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${cormorant.variable}`}
+      className={`${greatVibes.variable} ${playfair.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${cormorant.variable}`}
     >
       <body>{children}</body>
     </html>

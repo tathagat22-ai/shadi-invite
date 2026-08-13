@@ -6,7 +6,6 @@ import EnvelopeReveal from "./EnvelopeReveal";
 import Hero from "./Hero";
 import Celebrations from "./Celebrations";
 import Footer from "./Footer";
-import FloatingPetals from "./FloatingPetals";
 import AudioPlayer from "./AudioPlayer";
 
 export default function WeddingApp() {
@@ -17,7 +16,6 @@ export default function WeddingApp() {
       {!opened && <EnvelopeReveal onDone={() => setOpened(true)} />}
 
       <SmoothScroll>
-        <FloatingPetals />
         <Hero opened={opened} />
         <Celebrations />
         <Footer />

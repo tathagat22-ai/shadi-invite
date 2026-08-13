@@ -1,190 +1,97 @@
 @import "tailwindcss";
 
 :root {
-  /* Deep jewel-tone base */
-  --wine-deep: #2A0810;
-  --wine: #4A1420;
-  --maroon: #6B1F2E;
-  --burgundy: #7B2D3F;
-  --midnight: #140B2E;
-  --navy: #1A1042;
-
-  /* Gold family */
-  --gold: #D4AF37;
-  --gold-bright: #E8C15A;
-  --gold-light: #F5D896;
-  --gold-pale: #F7ECD5;
-  --gold-deep: #A87B2C;
-
-  /* Accents */
-  --emerald: #1B5E4A;
-  --emerald-bright: #2E8B6B;
-  --marigold: #E8862E;
-  --saffron: #F4A825;
-  --rose: #D98BA0;
-
-  /* Text */
-  --cream: #F7ECD5;
-  --cream-muted: #D8C4A0;
-  --ink: #1A0509;
+  --blush: #F5E6E0;
+  --blush-light: #FBF3F0;
+  --blush-deep: #EEDDD6;
+  --rose-muted: #C9A0A0;
+  --rose-soft: #D4B0A8;
+  --mauve: #B89090;
+  --mauve-deep: #8B6B6B;
+  --silver: #C0B8B0;
+  --silver-light: #D8D0C8;
+  --silver-dark: #8A8078;
+  --charcoal: #3D2B1F;
+  --charcoal-light: #6B5B4F;
+  --brown-soft: #5A4A3E;
+  --cream: #FFF8F2;
+  --cream-warm: #F8EDE4;
+  --lavender-pink: #E8D8E8;
+  --envelope-pink: #E8D0C8;
+  --envelope-light: #F0DCD4;
+  --envelope-dark: #DEC4BC;
+  --ribbon: #D4B0A8;
+  --green-leaf: #6B8B5E;
+  --green-dark: #4A6B3E;
 }
 
 @theme inline {
-  --color-wine-deep: var(--wine-deep);
-  --color-wine: var(--wine);
-  --color-maroon: var(--maroon);
-  --color-burgundy: var(--burgundy);
-  --color-midnight: var(--midnight);
-  --color-navy: var(--navy);
-  --color-gold: var(--gold);
-  --color-gold-bright: var(--gold-bright);
-  --color-gold-light: var(--gold-light);
-  --color-gold-pale: var(--gold-pale);
-  --color-emerald: var(--emerald);
-  --color-marigold: var(--marigold);
-  --color-saffron: var(--saffron);
-  --color-rose: var(--rose);
-  --color-cream: var(--cream);
-  --color-cream-muted: var(--cream-muted);
-
-  --font-display: var(--font-playfair);
+  --color-background: var(--blush);
+  --color-foreground: var(--charcoal);
   --font-script: var(--font-great-vibes);
+  --font-display: var(--font-playfair);
   --font-heading: var(--font-cinzel);
   --font-decorative: var(--font-cinzel-decorative);
   --font-body: var(--font-cormorant);
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: auto;
-}
-
 body {
-  background: var(--wine-deep);
-  color: var(--cream);
+  background: var(--blush);
+  color: var(--charcoal);
   font-family: var(--font-body), Georgia, serif;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-::selection {
-  background: var(--gold);
-  color: var(--wine-deep);
+.text-script {
+  font-family: var(--font-script), cursive;
 }
 
-/* ===== Animations ===== */
+.text-display {
+  font-family: var(--font-display), serif;
+}
+
+.text-heading {
+  font-family: var(--font-heading), serif;
+}
+
+.text-decorative {
+  font-family: var(--font-decorative), serif;
+}
+
+.silver-text {
+  background: linear-gradient(135deg, #A0A0A0 0%, #D0D0D0 40%, #808080 60%, #C0C0C0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.silver-shimmer {
+  background: linear-gradient(
+    90deg,
+    #A0A0A0 0%,
+    #D8D0C8 25%,
+    #B0B0B0 50%,
+    #E0D8D0 75%,
+    #A0A0A0 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s ease-in-out infinite;
+}
+
 @keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 @keyframes float-gentle {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(4deg); }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
-@keyframes glow-pulse {
-  0%, 100% { opacity: 0.5; filter: blur(20px); }
-  50% { opacity: 0.85; filter: blur(28px); }
-}
-
-@keyframes flicker {
-  0%, 100% { opacity: 0.9; transform: scale(1); }
-  25% { opacity: 0.7; transform: scale(0.97); }
-  50% { opacity: 1; transform: scale(1.03); }
-  75% { opacity: 0.8; transform: scale(0.98); }
-}
-
-@keyframes sway {
-  0%, 100% { transform: rotate(-2deg); }
-  50% { transform: rotate(2deg); }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* ===== Gold text treatments ===== */
-.gold-text {
-  background: linear-gradient(
-    135deg,
-    var(--gold-deep) 0%,
-    var(--gold-bright) 30%,
-    var(--gold-light) 50%,
-    var(--gold-bright) 70%,
-    var(--gold-deep) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.gold-shimmer {
-  background: linear-gradient(
-    90deg,
-    var(--gold-deep) 0%,
-    var(--gold-bright) 20%,
-    var(--gold-light) 40%,
-    #FFF6DE 50%,
-    var(--gold-light) 60%,
-    var(--gold-bright) 80%,
-    var(--gold-deep) 100%
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shimmer 5s linear infinite;
-}
-
-.text-glow-gold {
-  text-shadow: 0 0 20px rgba(232, 193, 90, 0.5),
-    0 0 40px rgba(212, 175, 55, 0.25);
-}
-
-/* ===== Decorative helpers ===== */
-.gold-hairline {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--gold) 20%,
-    var(--gold-light) 50%,
-    var(--gold) 80%,
-    transparent
-  );
-}
-
-.section-padding {
-  padding: clamp(4rem, 10vw, 8rem) clamp(1.25rem, 5vw, 4rem);
-}
-
-.vignette::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 40%,
-    rgba(42, 8, 16, 0.55) 100%
-  );
-}
-
-.glass-panel {
-  background: linear-gradient(
-    160deg,
-    rgba(107, 31, 46, 0.35),
-    rgba(42, 8, 16, 0.55)
-  );
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(212, 175, 55, 0.35);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(245, 216, 150, 0.15);
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--silver), transparent);
 }

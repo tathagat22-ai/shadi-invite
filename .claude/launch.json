@@ -3,9 +3,7 @@
   "configurations": [
     {
       "name": "v2-dev",
-      "runtimeExecutable": "cmd.exe",
-      "runtimeArgs": ["/c", "cd /d C:\\Users\\tatha\\OneDrive\\shadi_invite\\shadi-invite\\v2 && set PATH=C:\\Program Files\\nodejs;%PATH% && npx next dev --turbopack --port 3001"],
-      "port": 3001
+      "url": "http://localhost:3001"
     }
   ]
 }
