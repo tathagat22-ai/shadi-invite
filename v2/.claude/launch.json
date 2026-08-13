@@ -1,0 +1,9 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "v2-dev",
+      "url": "http://localhost:3001"
+    }
+  ]
+}

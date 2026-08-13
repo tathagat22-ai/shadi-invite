@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+:root {
+  --blush: #F5E6E0;
+  --blush-light: #FBF3F0;
+  --blush-deep: #EEDDD6;
+  --rose-muted: #C9A0A0;
+  --rose-soft: #D4B0A8;
+  --mauve: #B89090;
+  --mauve-deep: #8B6B6B;
+  --silver: #C0B8B0;
+  --silver-light: #D8D0C8;
+  --silver-dark: #8A8078;
+  --charcoal: #3D2B1F;
+  --charcoal-light: #6B5B4F;
+  --brown-soft: #5A4A3E;
+  --cream: #FFF8F2;
+  --cream-warm: #F8EDE4;
+  --lavender-pink: #E8D8E8;
+  --envelope-pink: #E8D0C8;
+  --envelope-light: #F0DCD4;
+  --envelope-dark: #DEC4BC;
+  --ribbon: #D4B0A8;
+  --green-leaf: #6B8B5E;
+  --green-dark: #4A6B3E;
+}
+
+@theme inline {
+  --color-background: var(--blush);
+  --color-foreground: var(--charcoal);
+  --font-script: var(--font-great-vibes);
+  --font-display: var(--font-playfair);
+  --font-heading: var(--font-cinzel);
+  --font-decorative: var(--font-cinzel-decorative);
+  --font-body: var(--font-cormorant);
+}
+
+body {
+  background: var(--blush);
+  color: var(--charcoal);
+  font-family: var(--font-body), Georgia, serif;
+  overflow-x: hidden;
+}
+
+.text-script {
+  font-family: var(--font-script), cursive;
+}
+
+.text-display {
+  font-family: var(--font-display), serif;
+}
+
+.text-heading {
+  font-family: var(--font-heading), serif;
+}
+
+.text-decorative {
+  font-family: var(--font-decorative), serif;
+}
+
+.silver-text {
+  background: linear-gradient(135deg, #A0A0A0 0%, #D0D0D0 40%, #808080 60%, #C0C0C0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.silver-shimmer {
+  background: linear-gradient(
+    90deg,
+    #A0A0A0 0%,
+    #D8D0C8 25%,
+    #B0B0B0 50%,
+    #E0D8D0 75%,
+    #A0A0A0 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--silver), transparent);
+}

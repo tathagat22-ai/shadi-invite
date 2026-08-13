@@ -1,38 +1,27 @@
 export interface WeddingEvent {
   id: string;
   name: string;
+  subtitle?: string;
   tagline: string;
   date: string;
   time: string;
   venue: string;
   address: string;
-  mapLink: string;
   icon: string;
   image?: string;
 }
 
 export const events: WeddingEvent[] = [
   {
-    id: "haldi",
-    name: "Haldi",
-    tagline: "Blessings in Gold",
+    id: "carnival",
+    name: "Carnival",
+    subtitle: "Haldi / Mehendi",
+    tagline: "Colours, Laughter & Blessings",
     date: "Date TBD",
     time: "Time TBD",
     venue: "Venue TBD",
     address: "Address TBD",
-    mapLink: "#",
-    icon: "haldi",
-  },
-  {
-    id: "mehendi",
-    name: "Mehendi",
-    tagline: "Colors of Love",
-    date: "Date TBD",
-    time: "Time TBD",
-    venue: "Venue TBD",
-    address: "Address TBD",
-    mapLink: "#",
-    icon: "mehendi",
+    icon: "carnival",
   },
   {
     id: "sangeet",
@@ -42,7 +31,6 @@ export const events: WeddingEvent[] = [
     time: "Time TBD",
     venue: "Venue TBD",
     address: "Address TBD",
-    mapLink: "#",
     icon: "sangeet",
     image: "/images/couple-sangeet.jpg",
   },
@@ -54,7 +42,6 @@ export const events: WeddingEvent[] = [
     time: "Time TBD",
     venue: "Venue TBD",
     address: "Address TBD",
-    mapLink: "#",
     icon: "wedding",
     image: "/images/couple-dance.jpg",
   },
@@ -66,7 +53,6 @@ export const events: WeddingEvent[] = [
     time: "Time TBD",
     venue: "Venue TBD",
     address: "Address TBD",
-    mapLink: "#",
     icon: "reception",
   },
 ];
@@ -75,16 +61,13 @@ export const weddingDetails = {
   bride: "Akanksha",
   groom: "Tathagat",
 
-  // Structured wedding date (drives the hero invitation card).
-  // Set dateKnown to true once the real date is confirmed.
   dateKnown: false,
-  weddingMonth: "Month", // e.g. "December"
-  weddingDay: "00", // e.g. "14"
+  weddingMonth: "Month",
+  weddingDay: "00",
   weddingYear: "2026",
-  weddingWeekday: "Weekday", // e.g. "Sunday"
-  weddingTime: "Time to be announced", // e.g. "At Seven O'Clock in the Evening"
+  weddingWeekday: "Weekday",
+  weddingTime: "Time to be announced",
 
-  // Primary ceremony venue shown on the hero card
   ceremonyVenue: "Venue to be announced",
   ceremonyCity: "",
 
