@@ -11,11 +11,11 @@ const GOLD = "#E6D6AE";
 const GOLD_MUTED = "#C9B891";
 
 // Per-event tuning for the composited couple figurine (standing vs sitting differ).
-const COUPLE: Record<string, { height: string; maxW: string; bottom: string }> = {
-  carnival: { height: "62%", maxW: "80%", bottom: "17%" },
-  sangeet: { height: "66%", maxW: "88%", bottom: "15%" },
-  wedding: { height: "52%", maxW: "92%", bottom: "17%" },
-  reception: { height: "60%", maxW: "88%", bottom: "16%" },
+const COUPLE: Record<string, { height: string; maxW: string; bottom: string; offsetX?: string }> = {
+  carnival: { height: "50%", maxW: "88%", bottom: "17%", offsetX: "5%" },
+  sangeet: { height: "60%", maxW: "88%", bottom: "15%" },
+  wedding: { height: "49%", maxW: "92%", bottom: "25%" },
+  reception: { height: "55%", maxW: "88%", bottom: "16%" },
 };
 
 function CelebrationCard({ event }: { event: (typeof events)[number] }) {
@@ -85,8 +85,10 @@ function CelebrationCard({ event }: { event: (typeof events)[number] }) {
       <img
         src={event.couple}
         alt=""
-        className="card-couple absolute left-1/2 -translate-x-1/2 object-contain"
+        className="card-couple absolute object-contain"
         style={{
+          left: `calc(50% + ${c.offsetX ?? "0%"})`,
+          transform: "translateX(-50%)",
           bottom: c.bottom,
           height: c.height,
           maxWidth: c.maxW,
@@ -264,55 +266,127 @@ export default function Celebrations() {
           "linear-gradient(180deg, #0a0e26 0%, #0c1130 40%, #0a0e26 100%)",
       }}
     >
-      {/* Section header */}
+      {/* Section header — full-screen image card */}
       <div
         ref={headerRef}
-        className="flex flex-col items-center text-center px-6 pt-20 pb-12"
-        style={{ color: GOLD }}
+        className="relative w-full overflow-hidden"
+        style={{ aspectRatio: "9 / 16", maxHeight: "100vh" }}
       >
-        <div
-          className="ch"
-          style={{
-            width: "56px",
-            height: "1px",
-            background: GOLD_MUTED,
-            opacity: 0.6,
-            marginBottom: "1.6rem",
-          }}
+        <img
+          src="/images/hero-palace.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover object-center"
         />
-        <h2
-          className="ch"
-          style={{
-            fontFamily: "var(--font-pinyon-script)",
-            fontSize: "clamp(40px, 12vw, 62px)",
-            lineHeight: 1.05,
-            textShadow: "0 2px 14px rgba(0,0,0,0.5)",
-          }}
-        >
-          The Celebrations
-        </h2>
-        <p
-          className="ch"
-          style={{
-            fontFamily: "var(--font-cinzel)",
-            fontSize: "clamp(8px, 2.6vw, 11px)",
-            letterSpacing: "0.3em",
-            marginTop: "0.8rem",
-            color: GOLD_MUTED,
-          }}
-        >
-          JOIN US FOR THE FESTIVITIES
-        </p>
+
+        {/* Dark overlay for text legibility */}
         <div
-          className="ch"
-          style={{
-            width: "56px",
-            height: "1px",
-            background: GOLD_MUTED,
-            opacity: 0.6,
-            marginTop: "1.6rem",
-          }}
+          className="absolute inset-0"
+          style={{ background: "rgba(6,10,28,0.5)" }}
         />
+
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none"
+          style={{ color: GOLD, paddingLeft: "12%", paddingRight: "12%" }}
+        >
+          {/* Top diamond ornament */}
+          <div className="ch flex items-center gap-3" style={{ marginBottom: "1.4rem" }}>
+            <span style={{ width: "clamp(24px, 7vw, 40px)", height: "1px", background: GOLD_MUTED, display: "inline-block" }} />
+            <span style={{ fontSize: "clamp(8px, 2.2vw, 12px)", color: GOLD_MUTED }}>◆</span>
+            <span style={{ width: "clamp(24px, 7vw, 40px)", height: "1px", background: GOLD_MUTED, display: "inline-block" }} />
+          </div>
+
+          <h2
+            className="ch"
+            style={{
+              fontFamily: "var(--font-pinyon-script)",
+              fontSize: "clamp(28px, 8vw, 48px)",
+              lineHeight: 1.05,
+              textShadow: "0 2px 16px rgba(0,0,0,0.8), 0 0 40px rgba(0,0,0,0.4)",
+            }}
+          >
+            The Celebrations
+          </h2>
+          <p
+            className="ch"
+            style={{
+              fontFamily: "var(--font-cinzel)",
+              fontSize: "clamp(7px, 2.2vw, 10px)",
+              letterSpacing: "0.3em",
+              marginTop: "0.3rem",
+              color: GOLD_MUTED,
+              textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+            }}
+          >
+            JOIN US FOR THE CELEBRATIONS
+          </p>
+
+          {/* Invitation paragraphs */}
+          <p
+            className="ch"
+            style={{
+              fontFamily: "var(--font-pinyon-script)",
+              fontSize: "clamp(14px, 3.8vw, 20px)",
+              lineHeight: 1.5,
+              marginTop: "clamp(1.2rem, 4vw, 2rem)",
+              textShadow: "0 1px 10px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.3)",
+              maxWidth: "80%",
+            }}
+          >
+            With joyful hearts, we invite you to share in
+            <br />
+            the colours, music and sacred moments
+            <br />
+            of our wedding.
+          </p>
+          <p
+            className="ch"
+            style={{
+              fontFamily: "var(--font-pinyon-script)",
+              fontSize: "clamp(14px, 3.8vw, 20px)",
+              lineHeight: 1.5,
+              marginTop: "clamp(0.6rem, 2vw, 1rem)",
+              textShadow: "0 1px 10px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.3)",
+              maxWidth: "80%",
+            }}
+          >
+            Come celebrate, dance, laugh and bless us
+            <br />
+            as our forever begins.
+          </p>
+
+          {/* Bottom diamond ornament */}
+          <div className="ch flex items-center gap-3" style={{ marginTop: "clamp(1.2rem, 4vw, 2rem)" }}>
+            <span style={{ width: "clamp(24px, 7vw, 40px)", height: "1px", background: GOLD_MUTED, display: "inline-block" }} />
+            <span style={{ fontSize: "clamp(8px, 2.2vw, 12px)", color: GOLD_MUTED }}>◆</span>
+            <span style={{ width: "clamp(24px, 7vw, 40px)", height: "1px", background: GOLD_MUTED, display: "inline-block" }} />
+          </div>
+
+          {/* Date and location */}
+          <p
+            className="ch"
+            style={{
+              fontFamily: "var(--font-cinzel)",
+              fontSize: "clamp(9px, 2.8vw, 13px)",
+              letterSpacing: "0.2em",
+              marginTop: "clamp(1rem, 3vw, 1.6rem)",
+              textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+            }}
+          >
+            21ST, 22ND &amp; 27TH NOVEMBER 2026
+          </p>
+          <p
+            className="ch"
+            style={{
+              fontFamily: "var(--font-cinzel)",
+              fontSize: "clamp(8px, 2.4vw, 11px)",
+              letterSpacing: "0.35em",
+              marginTop: "0.4rem",
+              color: GOLD_MUTED,
+              textShadow: "0 1px 4px rgba(0,0,0,0.6)",
+            }}
+          >
+          </p>
+        </div>
       </div>
 
       {/* Event cards */}

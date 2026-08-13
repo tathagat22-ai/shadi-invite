@@ -46,7 +46,7 @@ export default function Footer() {
           textShadow: "0 2px 14px rgba(0,0,0,0.5)",
         }}
       >
-        {w.bride} &amp; {w.groom}
+        {w.groom} &amp; {w.bride}
       </p>
 
       <div

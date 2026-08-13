@@ -152,51 +152,6 @@ export default function Hero({ opened = true }: { opened?: boolean }) {
               gap: "clamp(6px, 2vw, 14px)",
             }}
           >
-            {/* Akansha */}
-            <div style={{ flex: "0 1 auto", maxWidth: "42%", textAlign: "center" }}>
-              <div
-                style={{
-                  fontFamily: "var(--font-pinyon-script)",
-                  fontSize: "clamp(28px, 8.2vw, 46px)",
-                  lineHeight: 1.05,
-                  textShadow: "0 2px 12px rgba(0,0,0,0.6)",
-                }}
-              >
-                <Script text="Akansha" />
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-cinzel)",
-                  fontSize: "clamp(8px, 2.3vw, 10.5px)",
-                  letterSpacing: "0.07em",
-                  lineHeight: 1.55,
-                  marginTop: "0.7em",
-                  color: GOLD_MUTED,
-                  textShadow: "0 1px 5px rgba(0,0,0,0.6)",
-                }}
-              >
-                DAUGHTER OF
-                <br />
-                MRS. APARNA SINGH
-                <br />
-                &amp; MR. S.K. SINGH
-              </div>
-            </div>
-
-            {/* Ampersand */}
-            <div
-              style={{
-                flex: "0 0 auto",
-                fontFamily: "var(--font-pinyon-script)",
-                fontSize: "clamp(22px, 6vw, 34px)",
-                color: GOLD,
-                paddingTop: "0.15em",
-                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
-              }}
-            >
-              &amp;
-            </div>
-
             {/* Tathagat */}
             <div style={{ flex: "0 1 auto", maxWidth: "42%", textAlign: "center" }}>
               <div
@@ -225,6 +180,51 @@ export default function Hero({ opened = true }: { opened?: boolean }) {
                 DR. KUSUM SHARMA
                 <br />
                 &amp; MR. SANJAY
+              </div>
+            </div>
+
+            {/* Ampersand */}
+            <div
+              style={{
+                flex: "0 0 auto",
+                fontFamily: "var(--font-pinyon-script)",
+                fontSize: "clamp(22px, 6vw, 34px)",
+                color: GOLD,
+                paddingTop: "0.15em",
+                textShadow: "0 2px 10px rgba(0,0,0,0.6)",
+              }}
+            >
+              &amp;
+            </div>
+
+            {/* Akansha */}
+            <div style={{ flex: "0 1 auto", maxWidth: "42%", textAlign: "center" }}>
+              <div
+                style={{
+                  fontFamily: "var(--font-pinyon-script)",
+                  fontSize: "clamp(28px, 8.2vw, 46px)",
+                  lineHeight: 1.05,
+                  textShadow: "0 2px 12px rgba(0,0,0,0.6)",
+                }}
+              >
+                <Script text="Akansha" />
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-cinzel)",
+                  fontSize: "clamp(8px, 2.3vw, 10.5px)",
+                  letterSpacing: "0.07em",
+                  lineHeight: 1.55,
+                  marginTop: "0.7em",
+                  color: GOLD_MUTED,
+                  textShadow: "0 1px 5px rgba(0,0,0,0.6)",
+                }}
+              >
+                DAUGHTER OF
+                <br />
+                MRS. APARNA SINGH
+                <br />
+                &amp; MR. S.K. SINGH
               </div>
             </div>
           </div>
