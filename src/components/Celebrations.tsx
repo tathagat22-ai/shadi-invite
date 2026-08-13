@@ -15,7 +15,7 @@ const COUPLE: Record<string, { height: string; maxW: string; bottom: string; off
   carnival: { height: "50%", maxW: "88%", bottom: "17%", offsetX: "5%" },
   sangeet: { height: "60%", maxW: "88%", bottom: "15%" },
   wedding: { height: "49%", maxW: "92%", bottom: "25%" },
-  reception: { height: "55%", maxW: "88%", bottom: "16%" },
+  reception: { height: "70%", maxW: "88%", bottom: "16%" },
 };
 
 function CelebrationCard({ event }: { event: (typeof events)[number] }) {
