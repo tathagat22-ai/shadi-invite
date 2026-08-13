@@ -27,7 +27,19 @@ export default function AudioPlayer() {
       window.addEventListener(e, tryPlay, { passive: true })
     );
 
-    return cleanup;
+    const onVisibility = () => {
+      if (document.hidden) {
+        a.pause();
+      } else if (!a.paused || a.currentTime > 0) {
+        a.play().catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      cleanup();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, []);
 
   return (
