@@ -25,6 +25,8 @@ function CelebrationCard({ event }: { event: (typeof events)[number] }) {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const q = gsap.utils.selector(cardRef);
+      // Let GSAP own the X centering so the from tween never drops it
+      gsap.set(q(".card-couple"), { xPercent: -50 });
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: cardRef.current,
@@ -88,7 +90,6 @@ function CelebrationCard({ event }: { event: (typeof events)[number] }) {
         className="card-couple absolute object-contain"
         style={{
           left: `calc(50% + ${c.offsetX ?? "0%"})`,
-          transform: "translateX(-50%)",
           bottom: c.bottom,
           height: c.height,
           maxWidth: c.maxW,
